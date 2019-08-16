@@ -1,0 +1,6 @@
+---
+- hosts: hello_server
+  become: true
+  roles:
+    - geerlingguy.docker
+    - nvidia.nvidia_docker

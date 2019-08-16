@@ -1,0 +1,6 @@
+---
+- hosts: hello_server
+  name: get remote host ip address
+  tasks:
+    - debug:
+        var: ansible_os_family
