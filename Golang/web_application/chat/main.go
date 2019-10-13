@@ -5,8 +5,10 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sync"
+	"github.com/RyotaNakajimakun/Training/Golang/web_application/trace"
 )
 
 // tem1は１つのテンプレートを表わす
@@ -21,13 +23,14 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.once.Do(func() {
 		t.temp1 = template.Must(template.ParseFiles(filepath.Join("chat/templates", t.filename)))
 	})
-	t.temp1.Execute(w, nil)
+	t.temp1.Execute(w, r)
 }
 
 func main() {
 	var addr = flag.String("addr", ":8080", "アプリケーションアドレス")
 	flag.Parse()
 	r := newRoom()
+	r.tracer = trace.New(os.Stdout)
 
 	// ルート
 	http.Handle("/", &templateHandler{filename: "chat.html"})
