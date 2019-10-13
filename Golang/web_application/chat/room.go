@@ -5,7 +5,6 @@ import (
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
-	"os"
 )
 
 type room struct {
@@ -31,7 +30,7 @@ func newRoom() *room {
 		join:    make(chan *client),
 		leave:   make(chan *client),
 		clients: make(map[*client]bool),
-		tracer:  trace.New(os.Stdout),
+		tracer:  trace.Off(),
 	}
 }
 
