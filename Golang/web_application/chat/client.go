@@ -20,10 +20,14 @@ type client struct {
 func (c *client) read() {
 	for {
 		var msg *message
-		if err := c.socket.ReadJSON(&msg); err == nil{
+		if err := c.socket.ReadJSON(&msg); err == nil {
 			msg.When = time.Now()
 			msg.Time = msg.When.Format("2006/1/2 15:04:05")
 			msg.Name = c.userData["name"].(string)
+			msg.AvatarURL, _ = c.room.avatar.GetAvatarURL(c)
+			if avatarURL, ok := c.userData["avator_url"]; ok {
+				msg.AvatarURL = avatarURL.(string)
+			}
 			c.room.forward <- msg
 		} else {
 			break
@@ -32,7 +36,7 @@ func (c *client) read() {
 	c.socket.Close()
 }
 
-func (c *client) write () {
+func (c *client) write() {
 	for msg := range c.send {
 		if err := c.socket.WriteJSON(&msg); err != nil {
 			break
