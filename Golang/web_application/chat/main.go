@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	//@TODO 外部ファイルに定義　
+	//@TODO config.ymlと連携させる処理の追加　
 	SecurityKey       = ""
 	FacebookClientID  = ""
 	FacebookSecretKey = ""
