@@ -14,17 +14,20 @@ export default class App extends React.Component {
                 {"value": ["sample", "value"]},
                 {"value": ["sample", "value"]},
                 {"value": ["sample", "value"]}
-                ]
+            ]
         };
     }
 
     CommandUpload() {
         let input_strings = document.getElementById("input_command").value;
-        console.log(input_strings);
-
-        this.state.values.push({
-            "value": Module([input_strings, ""])
+        const commands = this.state.commands;
+        commands.push({
+            "value": [input_strings]
         });
+        // // 保存
+        this.setState(commands);
+
+        document.getElementById("input_command").value="";
     }
 
     render() {
@@ -37,6 +40,7 @@ export default class App extends React.Component {
                     {this.state.commands.map((item, i) => (
                         <RenderModules value={item} key={i}/>
                     ))}
+
                 </Container>
             </div>
         );
