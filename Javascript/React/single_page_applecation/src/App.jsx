@@ -10,15 +10,20 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            values: ["TestValue", ""]
+            commands: [
+                {"value": ["sample", "value"]},
+                {"value": ["sample", "value"]},
+                {"value": ["sample", "value"]}
+                ]
         };
     }
 
     CommandUpload() {
-        console.log(document.getElementById("input_command").value);
+        let input_strings = document.getElementById("input_command").value;
+        console.log(input_strings);
 
-        this.setState({
-            values: [document.getElementById("input_command").value,]
+        this.state.values.push({
+            "value": Module([input_strings, ""])
         });
     }
 
@@ -29,7 +34,9 @@ export default class App extends React.Component {
                 <Header/>
                 <Container>
                     <InputCommandField onClick={() => this.CommandUpload()}/>
-                    <RenderModules values={this.state.values}/>
+                    {this.state.commands.map((item, i) => (
+                        <RenderModules value={item} key={i}/>
+                    ))}
                 </Container>
             </div>
         );
