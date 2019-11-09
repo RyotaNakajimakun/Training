@@ -6,11 +6,11 @@ import (
 )
 
 const (
+	Name       = 0
 	moduleName = "- name: %s"
 )
 
 type Module struct {
-	Name   string   `json:"name"`
 	Values []string `json:"values"`
 }
 
@@ -29,10 +29,12 @@ func GetModuleGenerate(command string) ModuleGenerate {
 
 func generateSystemd(m *Module) {
 	moduleValues := []string{"  systemd:"}
+
 	name := "    name: %s"
 	stat := "    stat: %s"
 	enabled := "    enabled: %s"
-	fields := strings.Fields(m.Name)
+
+	fields := strings.Fields(m.Values[Name])
 
 	for _, field := range fields {
 		switch field {
@@ -55,6 +57,5 @@ func generateSystemd(m *Module) {
 			moduleValues = append(moduleValues, fmt.Sprintf(name, field))
 		}
 	}
-	m.Name = fmt.Sprintf(moduleName, m.Name)
 	m.Values = moduleValues
 }
