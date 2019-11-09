@@ -2,19 +2,32 @@ package main
 
 import (
 	. "github.com/RyotaNakajimakun/Training/Golang/gin/controllers"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
+const addr = ":23450"
 func main() {
 	r := gin.Default()
+	{
+		r.Use(static.Serve("/", static.LocalFile("./dist", true)))
+		r.Static("/dist", "./dist")
+		r.LoadHTMLGlob("dist/*.html")
+	}
 
-	r.LoadHTMLGlob("dist/*")
+	r.GET("/", ReactHome)
 
-	r.GET("/", showHome)
-	r.POST("/post", GenrateAnsibleModule)
-	r.Run(":23450")
+	api := r.Group("/api")
+	{
+		api.POST("/post", GenrateAnsibleModule)
+		api.GET("/post", GenrateAnsibleModule)
+	}
+
+	r.Run(addr)
 }
-func showHome(c *gin.Context) {
-	c.HTML(http.StatusOK, "index.html", nil)
+
+func Test(c *gin.Context) {
+	c.JSON(200, struct {
+		f string
+	}{f: "test"})
 }
