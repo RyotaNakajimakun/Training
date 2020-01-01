@@ -29,7 +29,8 @@ func TestGravatarAvatar (t *testing.T) {
 	var gravatarAvatar GravatarAvatar
 
 	client := new(client)
-	client.userData = map[string]interface{}{"email": "MyEmailAddress@example.com"}
+	client.userData = map[string]interface{}{"userid": ""}
+
 
 	url, err := gravatarAvatar.GetAvatarURL(client)
 	if err != nil {
@@ -39,4 +40,14 @@ func TestGravatarAvatar (t *testing.T) {
 	if url != "//www.garavatar.com/avatar/" {
 		t.Errorf("GravatarAvatar.GetAvatarが%sという謝った値を返しました", url)
 	}
+}
+
+
+func (_ GravatarAvatar) GetAvatarURL(c *client) (string, error) {
+	if userid, ok := c.userData["userid"]; ok {
+		if useridStr, ok := userid.(string); ok {
+			return "//www.garavatar.com/avatar/" + useridStr, nil
+		}
+	}
+	return "", ErrNoAvatarURL
 }
